@@ -31,7 +31,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function App() {
+  // Styles
+
   const classes = useStyles();
+
+  // State hooks
 
   const [isLoading, setLoading] = useState(false);
   const [currency, setCurrency] = useState("EUR");
@@ -42,6 +46,8 @@ export default function App() {
   const [data, setData] = useState([]);
 
   const [availableRates, setAvailableRates] = useState([]);
+
+  // UseEffect hooks
 
   useEffect(() => {
     FetchData();
@@ -54,17 +60,19 @@ export default function App() {
     setExchangeRate(availableRates.filter((e) => e[0] === rate)[0]);
   }, [rate]);
 
+  // API Fetch method
+
   const FetchData = async () => {
     setLoading(true);
     const response = await (
       await fetch(`https://api.exchangeratesapi.io/latest?base=${currency}`)
     ).json();
     setData({ ...response });
-    if (data) {
-      setAvailableRates(Object.entries(response.rates));
-      setLoading(false);
-    }
+    setAvailableRates(Object.entries(response.rates));
+    setLoading(false);
   };
+
+  // Handle event methods:
 
   const handleChangeCurrency = (event) => {
     setCurrency(event.target.value);
@@ -92,17 +100,16 @@ export default function App() {
               onChange={handleChangeCurrency}
             >
               <MenuItem id="from" value={"EUR"}>
-                Euro
+                EUR
               </MenuItem>
-              <MenuItem id="from" value={"JPY"}>
-                Japanese Yen
-              </MenuItem>
-              <MenuItem id="from" value={"CHF"}>
-                Swiss Franc
-              </MenuItem>
+              {availableRates.map((e) => (
+                <MenuItem id="from" value={`${e[0]}`}>
+                  {e[0]}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
-          <span> To: </span>
+          <p> To: </p>
 
           <FormControl className={classes.formControl}>
             <InputLabel id="demo-simple-select-label">Convert to</InputLabel>
