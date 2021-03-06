@@ -1,12 +1,12 @@
-import "./styles.css";
-import { useState, useEffect } from "react";
+import "./styles.css"
+import { useState, useEffect } from "react"
 
-import AppBar from "@material-ui/core/AppBar";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar"
+import InputLabel from "@material-ui/core/InputLabel"
+import MenuItem from "@material-ui/core/MenuItem"
+import FormControl from "@material-ui/core/FormControl"
+import Select from "@material-ui/core/Select"
+import { makeStyles } from "@material-ui/core/styles"
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -28,59 +28,59 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2)
   }
-}));
+}))
 
 export default function App() {
   // Styles
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   // State hooks
 
-  const [isLoading, setLoading] = useState(false);
-  const [currency, setCurrency] = useState("EUR");
+  const [isLoading, setLoading] = useState(false)
+  const [currency, setCurrency] = useState("EUR")
 
-  const [rate, setRate] = useState([]);
-  const [exchangeRate, setExchangeRate] = useState([]);
+  const [rate, setRate] = useState([])
+  const [exchangeRate, setExchangeRate] = useState([])
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([])
 
-  const [availableRates, setAvailableRates] = useState([]);
+  const [availableRates, setAvailableRates] = useState([])
 
   // UseEffect hooks
 
   useEffect(() => {
-    FetchData();
+    FetchData()
     console.log("Currency from:" + currency);
-    setRate();
-  }, [currency]);
+    setRate()
+  }, [currency])
 
   useEffect(() => {
-    console.log("Exchange rate:" + rate);
-    setExchangeRate(availableRates.filter((e) => e[0] === rate)[0]);
-  }, [rate]);
+    console.log("Exchange rate:" + rate)
+    setExchangeRate(availableRates.filter((e) => e[0] === rate)[0])
+  }, [rate])
 
   // API Fetch method
 
   const FetchData = async () => {
-    setLoading(true);
+    setLoading(true)
     const response = await (
       await fetch(`https://api.exchangeratesapi.io/latest?base=${currency}`)
-    ).json();
-    setData({ ...response });
-    setAvailableRates(Object.entries(response.rates));
-    setLoading(false);
-  };
+    ).json()
+    setData({ ...response })
+    setAvailableRates(Object.entries(response.rates))
+    setLoading(false)
+  }
 
   // Handle event methods:
 
   const handleChangeCurrency = (event) => {
     setCurrency(event.target.value);
-  };
+  }
 
   const handleChangeRate = (event) => {
     setRate(event.target.value);
-  };
+  }
 
   return (
     <>
@@ -138,5 +138,5 @@ export default function App() {
         </div>
       )}
     </>
-  );
+  )
 }
